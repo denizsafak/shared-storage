@@ -225,23 +225,12 @@ fun drawableToBitmap(drawable: Drawable): Bitmap {
 /**
  * Convert bitmap to byte array using ByteBuffer.
  */
+// Make sure to add this import at the top of the file if not present
+// import java.io.ByteArrayOutputStream
+
 fun Bitmap.convertToByteArray(): ByteArray {
-  //minimum number of bytes that can be used to store this bitmap's pixels
-  val size: Int = this.byteCount
-
-  //allocate new instances which will hold bitmap
-  val buffer = ByteBuffer.allocate(size)
-  val bytes = ByteArray(size)
-
-  // copy the bitmap's pixels into the specified buffer
-  this.copyPixelsToBuffer(buffer)
-
-  // rewinds buffer (buffer position is set to zero and the mark is discarded)
-  buffer.rewind()
-
-  // transfer bytes from buffer into the given destination array
-  buffer.get(bytes)
-
-  // return bitmap's pixels
-  return bytes
+  val stream = java.io.ByteArrayOutputStream()
+  // Compress the bitmap to PNG format
+  this.compress(Bitmap.CompressFormat.PNG, 100, stream)
+  return stream.toByteArray()
 }
